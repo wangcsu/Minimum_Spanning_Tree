@@ -1,11 +1,14 @@
 package project2.cs6591;
 
-/**
- * Created by Frank on 2/15/17.
- */
 public class Vertex {
     private int id;
     private int xcord, ycord;
+
+    public Vertex(int id, int xcord, int ycord) {
+        this.id = id;
+        this.xcord = xcord;
+        this.ycord = ycord;
+    }
 
     public int getId() {
         return id;
