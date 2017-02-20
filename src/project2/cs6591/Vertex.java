@@ -3,11 +3,15 @@ package project2.cs6591;
 public class Vertex {
     private int id;
     private int xcord, ycord;
+    private int componentId;
+    // private boolean isconnected;
 
     public Vertex(int id, int xcord, int ycord) {
+        // this.isconnected = false;
         this.id = id;
         this.xcord = xcord;
         this.ycord = ycord;
+        this.componentId = id;
     }
 
     public int getId() {
@@ -32,5 +36,21 @@ public class Vertex {
 
     public void setYcord(int ycord) {
         this.ycord = ycord;
+    }
+
+    /*public boolean isIsconnected() {
+        return isconnected;
+    }
+
+    public void setIsconnected(boolean isconnected) {
+        this.isconnected = isconnected;
+    }*/
+
+    public int getComponentId() {
+        return componentId;
+    }
+
+    public void setComponentId(int componentId) {
+        this.componentId = componentId;
     }
 }
