@@ -9,6 +9,7 @@ public class Main {
     public static List<Vertex> vertices = new ArrayList<>();
     public static List<Edge> edges = new ArrayList<>();
     public static int totalEdges = 0;
+    public static List<Edge> MST = new ArrayList<>();
 
     public static void main(String[] args) {
         File file = new File("D:\\Documents\\CS6591\\Project2\\nodelocationsW17.txt");
@@ -71,11 +72,14 @@ public class Main {
         double totalWeight = 0.0;
         for (Edge e : edges) {
             if (e.isChosen()){
+                MST.add(e);
                 totalWeight += e.getDistance();
                 System.out.println(e.getSrc().getId() + " " + e.getDest().getId() + " " + Math.round(e.getDistance() * 1000d) / 1000d);
             }
         }
 
         System.out.println("MST Weight = " + Math.round(totalWeight * 1000d) / 1000d);
+
+        Graph g = new Graph(vertices, MST);
     }
 }
