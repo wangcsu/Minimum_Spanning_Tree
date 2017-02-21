@@ -8,6 +8,7 @@ public class Main {
 
     public static List<Vertex> vertices = new ArrayList<>();
     public static List<Edge> edges = new ArrayList<>();
+    public static List<Traffic> traffics = new ArrayList<>();
     public static int totalEdges = 0;
     public static List<Edge> MST = new ArrayList<>();
 
@@ -90,5 +91,32 @@ public class Main {
             }
             System.out.println();
         }*/
+
+        file = new File("D:\\Documents\\CS6591\\Project2\\traffictableW17.txt");
+        Vertex srcV, destV;
+        srcV = new Vertex();
+        destV = new Vertex();
+        try {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNext()) {
+                int srcId = Integer.valueOf(scanner.next());
+                int destId = Integer.valueOf(scanner.next());
+                int load = Integer.valueOf(scanner.next());
+                for (Vertex v : vertices) {
+                    if (v.getId() == srcId)
+                        srcV = v;
+                    if (v.getId() == destId)
+                        destV = v;
+                }
+                Traffic t = new Traffic(srcV, destV, load);
+                traffics.add(t);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        /*for (Traffic t : traffics)
+            System.out.println(t.getSrc().getId() + "  " + t.getDest().getId() + "  " + t.getLoad());*/
+
     }
 }

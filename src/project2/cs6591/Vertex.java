@@ -6,6 +6,9 @@ public class Vertex {
     private int componentId;
     // private boolean isconnected;
 
+
+    public Vertex() {}
+
     public Vertex(int id, int xcord, int ycord) {
         // this.isconnected = false;
         this.id = id;
