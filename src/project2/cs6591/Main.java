@@ -81,5 +81,14 @@ public class Main {
         System.out.println("MST Weight = " + Math.round(totalWeight * 1000d) / 1000d);
 
         Graph g = new Graph(vertices, MST);
+        /*AdjacencyList<Vertex> l = new AdjacencyList<> ();
+        for (Vertex v : vertices) {
+            l = (AdjacencyList<Vertex>) g.adj(v.getId() - 1);
+            System.out.print(v.getId() + ": ");
+            for (Vertex w : l) {
+                System.out.print(w.getId() + "  ");
+            }
+            System.out.println();
+        }*/
     }
 }
