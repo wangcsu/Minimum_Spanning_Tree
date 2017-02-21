@@ -1,5 +1,7 @@
 package project2.cs6591;
 
+import com.sun.xml.internal.ws.api.model.wsdl.editable.EditableWSDLFault;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -117,6 +119,43 @@ public class Main {
 
         /*for (Traffic t : traffics)
             System.out.println(t.getSrc().getId() + "  " + t.getDest().getId() + "  " + t.getLoad());*/
+        for (Traffic t : traffics) {
+            Stack<Vertex> path = new Stack<>();
+            path = findPath(g, t.getSrc(), t.getDest());
+            /*System.out.print(t.getSrc().getId() + " to " + t.getDest().getId() + ": ");
+            while (!path.empty()) {
+                System.out.print(path.pop().getId() + "  ");
+            }
+            System.out.println();*/
+            addLoad(MST, path, t);
+        }
 
+        for (Edge e : MST) {
+            System.out.println(e.getSrc().getId() + " " + e.getDest().getId() + " " + e.getLoad());
+        }
+    }
+
+    private static void addLoad(List<Edge> e, Stack<Vertex> v, Traffic traffic) {
+        while (!v.empty()) {
+            Vertex w = v.pop();
+            if (v.isEmpty()) {
+                break;
+            }
+            for (Edge x : e) {
+                if ((x.getSrc().getId() == w.getId() && x.getDest().getId() == v.peek().getId())
+                        ||(x.getDest().getId() == w.getId() && x.getSrc().getId() == v.peek().getId())) {
+                    x.setLoad(x.getLoad() + traffic.getLoad());
+                }
+            }
+        }
+    }
+
+    private static Stack<Vertex> findPath(Graph graph, Vertex src, Vertex dest) {
+        Graph g = graph;
+        DepthFirstPaths path = new DepthFirstPaths(g, src);
+        // System.out.print(src.getId() + " to " + dest.getId() + ": ");
+        Stack<Vertex> s = new Stack<>();
+        s = (Stack<Vertex>) path.pathTo(dest);
+        return s;
     }
 }

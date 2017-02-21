@@ -4,6 +4,7 @@ public class Edge implements Comparable<Edge>{
     private Vertex src, dest;
     private double distance;
     private boolean chosen;
+    private int load;
 
     public Edge (Vertex v1, Vertex v2) {
         src = v1;
@@ -11,6 +12,7 @@ public class Edge implements Comparable<Edge>{
         distance = Math.sqrt(Math.pow(v1.getXcord() - v2.getXcord(), 2) +
                 Math.pow(v1.getYcord() - v2.getYcord(), 2));
         chosen = false;
+        load = 0;
     }
 
     public Vertex getSrc() {
@@ -43,6 +45,14 @@ public class Edge implements Comparable<Edge>{
 
     public void setChosen(boolean chosen) {
         this.chosen = chosen;
+    }
+
+    public int getLoad() {
+        return load;
+    }
+
+    public void setLoad(int load) {
+        this.load = load;
     }
 
     @Override
