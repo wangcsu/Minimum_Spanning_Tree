@@ -21,24 +21,12 @@ public class Edge implements Comparable<Edge>{
         return src;
     }
 
-    public void setSrc(Vertex src) {
-        this.src = src;
-    }
-
     public Vertex getDest() {
         return dest;
     }
 
-    public void setDest(Vertex dest) {
-        this.dest = dest;
-    }
-
     public double getDistance() {
         return distance;
-    }
-
-    public void setDistance(int distance) {
-        this.distance = distance;
     }
 
     public boolean isChosen() {

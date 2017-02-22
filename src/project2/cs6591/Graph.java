@@ -30,10 +30,6 @@ public class Graph {
         return vertices;
     }
 
-    public List<Edge> getEdges() {
-        return edges;
-    }
-
     public Iterable<Vertex> adj(int v) {
         return adj[v];
     }

@@ -3,8 +3,10 @@ package project2.cs6591;
 import java.util.Iterator;
 
 /**
- * Created by Ge Wang on 2/20/2017.
+ * This class was modified from "Algorithm, 4th edition"
+ * by Robert Sedgewick and Kevin Wayne, Pg155.
  */
+
 public class AdjacencyList<Item> implements Iterable<Item> {
     private Node first;
 
