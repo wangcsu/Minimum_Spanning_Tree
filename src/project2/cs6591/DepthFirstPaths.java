@@ -2,9 +2,11 @@ package project2.cs6591;
 
 import java.util.Stack;
 
-/**
- * Created by Ge Wang on 2/20/2017.
+/*
+    This class was modified from "Algorithm, 4th edition"
+    by Robert Sedgewick and Kevi Wayne, Pg536
  */
+
 public class DepthFirstPaths {
     private boolean[] marked;
     private Vertex[] edgeTo;
