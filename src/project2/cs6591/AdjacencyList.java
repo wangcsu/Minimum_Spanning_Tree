@@ -3,7 +3,7 @@ package project2.cs6591;
 import java.util.Iterator;
 
 /**
- * This class was modified from "Algorithm, 4th edition"
+ * This class was modified from "Algorithms, 4th edition"
  * by Robert Sedgewick and Kevin Wayne, Pg155.
  */
 

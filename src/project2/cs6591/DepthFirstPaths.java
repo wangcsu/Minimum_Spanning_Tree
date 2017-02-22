@@ -3,7 +3,7 @@ package project2.cs6591;
 import java.util.Stack;
 
 /*
-    This class was modified from "Algorithm, 4th edition"
+    This class was modified from "Algorithms, 4th edition"
     by Robert Sedgewick and Kevi Wayne, Pg536
  */
 
