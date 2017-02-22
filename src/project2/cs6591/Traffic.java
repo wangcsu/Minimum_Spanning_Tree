@@ -7,11 +7,13 @@ public class Traffic {
     private Vertex src;
     private Vertex dest;
     private int load;
+    private int hops;
 
     public Traffic(Vertex src, Vertex dest, int load) {
         this.src = src;
         this.dest = dest;
         this.load = load;
+        this.hops = 0;
     }
 
     public Vertex getSrc() {
@@ -24,5 +26,13 @@ public class Traffic {
 
     public int getLoad() {
         return load;
+    }
+
+    public int getHops() {
+        return hops;
+    }
+
+    public void setHops(int hops) {
+        this.hops = hops;
     }
 }

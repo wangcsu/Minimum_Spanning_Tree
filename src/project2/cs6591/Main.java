@@ -13,6 +13,8 @@ public class Main {
     public static List<Traffic> traffics = new ArrayList<>();
     public static int totalEdges = 0;
     public static List<Edge> MST = new ArrayList<>();
+    public static final double LINE_CAPACITY = 1544.0;
+    public static final double Tbar = 0.0054;
 
     public static void main(String[] args) {
         File file = new File("D:\\Documents\\CS6591\\Project2\\nodelocationsW17.txt");
@@ -40,11 +42,6 @@ public class Main {
 
         Collections.sort(edges);
 
-        /*for (Edge e : edges) {
-            System.out.println(e.getSrc().getId() + " " + e.getDest().getId() + " " + Math.round(e.getDistance() * 1000d) / 1000d);
-        }
-        System.out.println("=========================================");*/
-
         // Step 2: Loop through all the edges
         // For each edge, if the two vertex are in different component,
         // merge the two component, until we have |v| -1 edges in total
@@ -64,35 +61,18 @@ public class Main {
                     if (v.getComponentId() == destCompId)
                         v.setComponentId(srcCompId);
                 }
-                /*e.getDest().setComponentId(e.getSrc().getComponentId());
-                e.getSrc().setIsconnected(true);
-                e.getDest().setIsconnected(true);*/
                 totalEdges++;
             }
             i++;
         } while (totalEdges < (vertices.size() - 1));
 
-        double totalWeight = 0.0;
         for (Edge e : edges) {
             if (e.isChosen()){
                 MST.add(e);
-                totalWeight += e.getDistance();
-                System.out.println(e.getSrc().getId() + " " + e.getDest().getId() + " " + Math.round(e.getDistance() * 1000d) / 1000d);
             }
         }
 
-        System.out.println("MST Weight = " + Math.round(totalWeight * 1000d) / 1000d);
-
         Graph g = new Graph(vertices, MST);
-        /*AdjacencyList<Vertex> l = new AdjacencyList<> ();
-        for (Vertex v : vertices) {
-            l = (AdjacencyList<Vertex>) g.adj(v.getId() - 1);
-            System.out.print(v.getId() + ": ");
-            for (Vertex w : l) {
-                System.out.print(w.getId() + "  ");
-            }
-            System.out.println();
-        }*/
 
         file = new File("D:\\Documents\\CS6591\\Project2\\traffictableW17.txt");
         Vertex srcV, destV;
@@ -117,22 +97,69 @@ public class Main {
             e.printStackTrace();
         }
 
-        /*for (Traffic t : traffics)
-            System.out.println(t.getSrc().getId() + "  " + t.getDest().getId() + "  " + t.getLoad());*/
         for (Traffic t : traffics) {
             Stack<Vertex> path = new Stack<>();
             path = findPath(g, t.getSrc(), t.getDest());
-            /*System.out.print(t.getSrc().getId() + " to " + t.getDest().getId() + ": ");
-            while (!path.empty()) {
-                System.out.print(path.pop().getId() + "  ");
-            }
-            System.out.println();*/
+            t.setHops(path.size() - 1);
             addLoad(MST, path, t);
         }
 
         for (Edge e : MST) {
-            System.out.println(e.getSrc().getId() + " " + e.getDest().getId() + " " + e.getLoad());
+            e.setLoad(e.getLoad() * 2);
+            e.setUtilization(e.getLoad() / LINE_CAPACITY);
         }
+        output(MST, traffics);
+    }
+
+    private static void output(List<Edge> edges, List<Traffic> traffic) {
+        double totalWeight = 0.0;
+        double totalUtilization = 0;
+        double maxUtilization = 0;
+        double averageUtilization = 0.0;
+        double totalTrafficHops = 0.0;
+        double totalTraffic = 0.0;
+        double averageHops = 0.0;
+        double averageDelay = 0.0;
+
+        System.out.println("========================= Minimum Spanning Tree =========================");
+        System.out.format("%12s%16s%15s%16s%16s", "Source", "Destination", "Weight(Km)", "Load(Kbps)", "Utilization");
+        System.out.println();
+        for (Edge e : edges) {
+            totalWeight += e.getDistance();
+            totalUtilization += e.getUtilization();
+            if (e.getUtilization() > maxUtilization)
+                maxUtilization = e.getUtilization();
+            System.out.format("%12d%16d%15.3f%16d%15.2f%-1s", e.getSrc().getId(), e.getDest().getId(),
+                    e.getDistance(), e.getLoad(), e.getUtilization()*100, "%");
+            System.out.println();
+        }
+        averageUtilization = totalUtilization / edges.size();
+        System.out.format("%-10s%6.3f", "MST Weight= ", totalWeight);
+        System.out.println();
+        System.out.format("%-15s%5.2f%-1s", "Max Utilization= ", maxUtilization * 100, "%");
+        System.out.println();
+        System.out.format("%-19s%5.2f%-1s", "Average Utilization= ", averageUtilization * 100, "%");
+        System.out.println();
+        System.out.println();
+        System.out.println("======================= Traffic Table =======================");
+        System.out.format("%12s%16s%22s%10s", "Source", "Destination", "Data Rate(Kbps)", "Hops");
+        System.out.println();
+        for (Traffic t : traffic) {
+            totalTrafficHops += (t.getLoad() * t.getHops());
+            totalTraffic += t.getLoad();
+            System.out.format("%12d%16d%22d%10d", t.getSrc().getId(), t.getDest().getId(),
+                    t.getLoad(), t.getHops());
+            System.out.println();
+        }
+        averageHops = totalTrafficHops / totalTraffic;
+        System.out.format("%-14s%4.2f", "Average Hops= ", averageHops);
+        System.out.println();
+        System.out.format("%-7s%5.4f%24s%5.2f%24s%6.2f%-1s", "TBar =", Tbar, "seconds; Average Hops =",
+                averageHops, "hops; Max Utilization =", maxUtilization * 100, "%");
+        System.out.println();
+        averageDelay = (Tbar * averageHops) / (1 - maxUtilization);
+        System.out.format("%-15s%6.3f%8s", "Average Delay =", averageDelay, "seconds");
+        System.out.println();
     }
 
     private static void addLoad(List<Edge> e, Stack<Vertex> v, Traffic traffic) {
